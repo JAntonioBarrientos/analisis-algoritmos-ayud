@@ -1,0 +1,92 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% --- Configuración para listados de código ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% --- Encabezado ---
+\title{Tarea 1: Propuesta de ejercicios}
+\author{Jose Antonio Barrientos Sanchez}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\hrulefill
+\vspace{1cm}
+
+\subsection*{Ejercicio 1}
+
+Ordene la siguiente lista de funciones de menor a mayor según su tasa de crecimiento asintótico. Es decir, si una función $f(n)$ precede a $g(n)$, entonces $f(n) = O(g(n))$.
+
+$$
+\begin{array}{ccccc}
+    \sqrt{n} & n \log_2(n) & 2^n & n^2 & \log_2(n) \\
+    n! & n & 1000 & n^3 & \log_2(\log_2(n)) \\
+\end{array}
+$$
+
+\subsection*{Ejercicio 2}
+Determine la complejidad temporal del siguiente fragmento de código.
+
+\begin{lstlisting}[language=Python, caption=Bucle simple]
+def funcion_ejemplo(n):
+    suma = 0
+    i = 1
+    while i <= n:
+        suma += i
+        i = i * 2
+    return suma
+\end{lstlisting}
+
+
+
+\subsection*{Ejercicio 3}
+Usando la definición formal de Big O, demuestre que $5n^3+ 3n + 2$ es $O(n^3)$.
+
+\subsection*{Ejercicio 4}
+
+Demuestre que para todo $k \geq 0$ y todo conjunto de constantes reales $\{a_k, a_{k-1}, \dots, a_1, a_0\}$, se cumple que:
+    $$ a_k n^k + a_{k-1} n^{k-1} + \dots + a_1 n + a_0 = O(n^k) $$
+
+\subsection*{Ejercicio 5}
+    
+    Muestre que para cualesquiera constantes reales $a$ y $b$, con $b > 0$, se cumple que:
+    $$ (n + a)^b = \Theta(n^b) $$
+
+
+
+\end{document}
