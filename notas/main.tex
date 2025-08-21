@@ -1,0 +1,224 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{amsthm}
+
+% Estilo para las demostraciones
+\theoremstyle{definition}
+\newtheorem{demo}{Demostración}
+
+% Márgenes
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\title{\textbf{Ordenamiento de Funciones por Tasa de Crecimiento Asintótico}}
+\author{Curso de Análisis de Algoritmos}
+\date{\today}
+
+\newcommand{\precprec}{\prec \! \! \! \prec}
+
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\begin{document}
+
+\section*{Notaci\'{o}n Big O (L\'{i}mite Superior Asint\'{o}tico)}
+
+\paragraph{Definici\'{o}n Formal:}
+Sean \(f(n)\) y \(g(n)\) dos funciones definidas sobre el conjunto de los enteros positivos. Se dice que \(f(n) \in O(g(n))\) (o \(f(n) = O(g(n))\)) si y s\'{o}lo si existen constantes positivas \(c\) y \(n_0\) tales que:
+\[ f(n) \leq c \cdot g(n) \quad \forall n \geq n_0 \]
+
+\section*{Notaci\'{o}n Big Omega (\(\Omega\)) (L\'{i}mite Inferior Asint\'{o}tico)}
+
+\paragraph{Definici\'{o}n Formal:}
+Se dice que \(f(n) \in \Omega(g(n))\) si y s\'{o}lo si existen constantes positivas \(c\) y \(n_0\) tales que:
+\[ f(n) \geq c \cdot g(n) \quad \forall n \geq n_0 \]
+
+\section*{Notaci\'{o}n Big Theta (\(\Theta\)) (L\'{i}mite Ajustado Asint\'{o}tico)}
+
+\paragraph{Definici\'{o}n Formal:}
+Se dice que \(f(n) \in \Theta(g(n))\) si y s\'{o}lo si existen constantes positivas \(c_1\), \(c_2\) y \(n_0\) tales que:
+\[ c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) \quad \forall n \geq n_0 \]
+Una definici\'{o}n equivalente es:
+\[ f(n) = \Theta(g(n)) \iff f(n) = O(g(n)) \text{ y } f(n) = \Omega(g(n)) \]
+
+
+
+
+\section{Problema}
+
+Ordenar la siguiente lista de funciones de menor a mayor según su tasa de crecimiento asintótico. Es decir, si una función $f(n)$ precede a $g(n)$ en la lista ordenada, entonces se debe cumplir que $f(n) = O(g(n))$.
+
+\[
+\begin{array}{ccccc}
+    \sqrt{n} & n \log_2(n) & 2^n & n^2 & \log_2(n) \\
+    n! & n & 1000 & n^3 & \log_2(\log_2(n)) \\
+\end{array}
+\]
+
+
+
+
+
+
+% Márgenes
+
+% --- Definición de un comando para mejorar la visualización ---
+
+\hrulefill
+\section{Solución}
+
+El orden correcto, desde la función con la menor tasa de crecimiento hasta la de mayor tasa, es el siguiente:
+
+\[
+1000 \prec \log_2(\log_2(n)) \prec \log_2(n) \prec \sqrt{n} \prec n \prec n \log_2(n) \prec n^2 \prec n^3 \prec 2^n \prec n!
+\]
+Donde $f(n) \prec g(n)$ denota que $f(n)$ crece asintóticamente más lento que $g(n)$.
+
+\hrulefill
+\section{Justificación Formal Detallada}
+
+Para establecer el orden, aplicamos la definición formal de la notación $O$ basada en límites. Se dice que $f(n) = O(g(n))$ si $\lim_{n \to \infty} \frac{f(n)}{g(n)} = c$, donde $c$ es una constante finita. Si $c=0$, el crecimiento de $f(n)$ es estrictamente menor. Para resolver los límites de formas indeterminadas como $\frac{\infty}{\infty}$, utilizaremos la \textbf{Regla de L'Hôpital}.
+
+\subsection{Clase 1: Constante y Logarítmicas}
+
+\paragraph{Log-Log vs. Log:} Se establece que $\log_2(\log_2(n)) = O(\log_2(n))$ porque el límite de su cociente es 0.
+
+\begin{demo}[$\lim_{n \to \infty} \frac{\log_2(\log_2(n))}{\log_2(n)} = 0$]
+Para simplificar, realizamos la sustitución $m = \log_2(n)$. Observamos que cuando $n \to \infty$, también $m \to \infty$. El límite se transforma en:
+\[ \lim_{m \to \infty} \frac{\log_2(m)}{m} \]
+Este límite presenta una forma indeterminada $\frac{\infty}{\infty}$, por lo que aplicamos la Regla de L'Hôpital, derivando el numerador y el denominador con respecto a $m$. Recordamos que la derivada de $\log_b(x)$ es $\frac{1}{x \ln(b)}$.
+\begin{align*}
+    \lim_{m \to \infty} \frac{\log_2(m)}{m} &= \lim_{m \to \infty} \frac{\frac{d}{dm}(\log_2(m))}{\frac{d}{dm}(m)} \\
+    &= \lim_{m \to \infty} \frac{\frac{1}{m \ln(2)}}{1} \\
+    &= \lim_{m \to \infty} \frac{1}{m \ln(2)} = 0
+\end{align*}
+El límite es 0 porque el denominador tiende a infinito mientras el numerador es constante.
+\end{demo}
+
+\subsection{Clase 2: Polinómicas y Relacionadas}
+
+\paragraph{Logarítmica vs. Polinómica:} Se demuestra que toda función logarítmica crece más lento que cualquier potencia de $n$ (con exponente positivo), por ejemplo, $\sqrt{n}$.
+
+\begin{demo}[$\lim_{n \to \infty} \frac{\log_2(n)}{\sqrt{n}} = 0$]
+Este límite presenta una forma indeterminada $\frac{\infty}{\infty}$. Aplicamos la Regla de L'Hôpital, derivando con respecto a $n$.
+\begin{align*}
+    \lim_{n \to \infty} \frac{\log_2(n)}{\sqrt{n}} &= \lim_{n \to \infty} \frac{\frac{d}{dn}(\log_2(n))}{\frac{d}{dn}(n^{1/2})} \\
+    &= \lim_{n \to \infty} \frac{\frac{1}{n \ln(2)}}{\frac{1}{2}n^{-1/2}} = \lim_{n \to \infty} \frac{\frac{1}{n \ln(2)}}{\frac{1}{2\sqrt{n}}} \\
+    &= \lim_{n \to \infty} \frac{2\sqrt{n}}{n \ln(2)} \\
+    &= \lim_{n \to \infty} \frac{2}{\sqrt{n} \ln(2)} = 0
+\end{align*}
+El límite es 0 porque $\sqrt{n}$ en el denominador tiende a infinito. Esto confirma que $\log_2(n) = O(\sqrt{n})$.
+\end{demo}
+
+\paragraph{Posición de $n \log_2(n)$:} Comparamos esta función con $n^2$.
+
+\begin{demo}[$\lim_{n \to \infty} \frac{n \log_2(n)}{n^2} = 0$]
+Primero simplificamos la expresión:
+\[ \lim_{n \to \infty} \frac{n \log_2(n)}{n^2} = \lim_{n \to \infty} \frac{\log_2(n)}{n} \]
+Este límite es idéntico al que resolvimos en la primera demostración (con variable $m$), por lo que, aplicando el mismo procedimiento de L'Hôpital, el resultado es 0. Esto demuestra que $n \log_2(n) = O(n^2)$.
+\end{demo}
+
+
+\subsection{Clase 3: Polinómica vs. Exponencial}
+
+\paragraph{Polinómica vs. Exponencial:} Demostramos que $n^3 = O(2^n)$.
+
+\begin{demo}[$\lim_{n \to \infty} \frac{n^3}{2^n} = 0$]
+Este límite es de la forma $\frac{\infty}{\infty}$. Necesitamos aplicar la Regla de L'Hôpital repetidamente hasta que el polinomio en el numerador se convierta en una constante.
+\begin{align*}
+    \lim_{n \to \infty} \frac{n^3}{2^n} &= \lim_{n \to \infty} \frac{3n^2}{2^n \ln(2)} \quad (\text{1ra aplicación}) \\
+    &= \lim_{n \to \infty} \frac{6n}{2^n (\ln(2))^2} \quad (\text{2da aplicación}) \\
+    &= \lim_{n \to \infty} \frac{6}{2^n (\ln(2))^3} \quad (\text{3ra aplicación}) \\
+    &= 0
+\end{align*}
+El límite es 0 porque el numerador es constante y el denominador tiende a infinito.
+\end{demo}
+
+
+
+
+
+
+
+
+\section{Problema}
+
+Ordenar la siguiente lista de funciones de menor a mayor según su tasa de crecimiento asintótico. Es decir, si $f(n)$ precede a $g(n)$, entonces $f(n) = O(g(n))$.
+\[
+\begin{array}{ccccc}
+    \sqrt{n} & n \log_2(n) & 2^n & n^2 & \log_2(n) \\
+    n! & n & 1000 & n^3 & \log_2(\log_2(n)) \\
+\end{array}
+\]
+
+\hrulefill
+\section{Solución Final Ordenada}
+
+\[
+1000 \prec \log_2(\log_2(n)) \prec \log_2(n) \prec \sqrt{n} \prec n \prec n \log_2(n) \prec n^2 \prec n^3 \prec 2^n \prec n!
+\]
+Donde $f(n) \prec g(n)$ denota que $f(n)$ crece asintóticamente más lento que $g(n)$.
+
+\hrulefill
+\section{Justificación Formal de la Cadena}
+
+A continuación, se demuestra formalmente cada paso (cada "$\prec$") en la cadena de crecimiento.
+
+\subsection{Constante $\prec$ Logarítmicas}
+\begin{itemize}
+    \item \textbf{1000 $\prec$ $\log_2(\log_2(n))$}: Una constante ($O(1)$) siempre crece más lento que cualquier función que tienda a infinito. $\lim_{n \to \infty} \frac{1000}{\log_2(\log_2(n))} = 0$.
+    \item \textbf{$\log_2(\log_2(n)) \prec \log_2(n)$}: Como se demostró previamente con la Regla de L'Hôpital y la sustitución $m = \log_2(n)$, el límite $\lim_{n \to \infty} \frac{\log_2(\log_2(n))}{\log_2(n)} = 0$.
+\end{itemize}
+
+\subsection{Logarítmica $\prec$ Polinómica}
+\begin{itemize}
+    \item \textbf{$\log_2(n) \prec \sqrt{n}$}: Se demostró con la Regla de L'Hôpital que $\lim_{n \to \infty} \frac{\log_2(n)}{\sqrt{n}} = 0$. Esto establece que las funciones logarítmicas son superadas por cualquier potencia de $n$ (con exponente $> 0$).
+\end{itemize}
+
+\subsection{Ordenamiento Interno de Polinomios y Log-Lineal}
+\begin{itemize}
+    \item \textbf{$\sqrt{n} \prec n$ y $n^2 \prec n^3$}: Para funciones de la forma $n^k$, el crecimiento es dictado por el exponente. Para $a < b$, se cumple que $n^a = O(n^b)$, ya que $\lim_{n \to \infty} \frac{n^a}{n^b} = \lim_{n \to \infty} \frac{1}{n^{b-a}} = 0$. Esto justifica $\sqrt{n} = n^{0.5} \prec n^1$ y $n^2 \prec n^3$.
+    
+    \item \textbf{$n \prec n \log_2(n)$}: El factor logarítmico, aunque de crecimiento lento, hace que la función crezca más rápido que una puramente lineal.
+    \[ \lim_{n \to \infty} \frac{n}{n \log_2(n)} = \lim_{n \to \infty} \frac{1}{\log_2(n)} = 0 \]
+    
+    \item \textbf{$n \log_2(n) \prec n^2$}: La función log-lineal crece más lento que cualquier polinomio con exponente mayor a 1.
+    \[ \lim_{n \to \infty} \frac{n \log_2(n)}{n^2} = \lim_{n \to \infty} \frac{\log_2(n)}{n} = 0 \quad (\text{demostrado con L'Hôpital}) \]
+\end{itemize}
+
+\subsection{Polinómica $\prec$ Exponencial}
+\begin{itemize}
+    \item \textbf{$n^3 \prec 2^n$}: Cualquier función exponencial (con base $> 1$) eventualmente supera a cualquier función polinómica. Se demostró aplicando L'Hôpital repetidamente que $\lim_{n \to \infty} \frac{n^3}{2^n} = 0$.
+\end{itemize}
+
+\subsection{Exponencial $\prec$ Factorial}
+\begin{itemize}
+    \item \textbf{$2^n \prec n!$}: La función factorial crece más rápido que cualquier exponencial. Para demostrarlo, no podemos usar L'Hôpital directamente, pero podemos analizar el comportamiento del cociente.
+\end{itemize}
+
+\begin{demo}[$\lim_{n \to \infty} \frac{2^n}{n!} = 0$]
+Expandimos los términos de la fracción:
+\[ \frac{2^n}{n!} = \frac{2 \cdot 2 \cdot 2 \cdot \dots \cdot 2}{1 \cdot 2 \cdot 3 \cdot \dots \cdot n} \]
+Podemos reagrupar estos términos. Para $n > 2$:
+\[ \frac{2^n}{n!} = \left(\frac{2}{1} \cdot \frac{2}{2}\right) \cdot \left(\frac{2}{3} \cdot \frac{2}{4} \cdot \dots \cdot \frac{2}{n}\right) \]
+El primer grupo es una constante: $\frac{2}{1} \cdot \frac{2}{2} = 2$. Cada término en el segundo grupo es menor o igual a $\frac{2}{3}$. Por lo tanto, podemos acotar la expresión:
+\[ 0 < \frac{2^n}{n!} \le 2 \cdot \left(\frac{2}{3}\right)^{n-2} \]
+Sabemos que $\lim_{n \to \infty} \left(\frac{2}{3}\right)^{n-2} = 0$, ya que la base es un número entre 0 y 1.
+Por el \textbf{Teorema del Sándwich (o de la Compresión)}, como la expresión $\frac{2^n}{n!}$ está acotada entre 0 y una función que tiende a 0, su límite también debe ser 0.
+\end{demo}
+
+\hrulefill
+\section{Conclusión: La Jerarquía de Crecimiento}
+
+Este ejercicio ilustra de manera práctica la jerarquía fundamental de las tasas de crecimiento asintótico, que es una de las ideas más importantes en el análisis de algoritmos. El ordenamiento final nos permite visualizar esta jerarquía:
+
+\begin{center}
+\Large
+\textbf{Constante $\prec$ Log-Log $\prec$ Logarítmica $\prec$ Polinómica (Raíz $\prec$ Lineal $\prec$ etc.) $\prec$ Exponencial $\prec$ Factorial}
+\end{center}
+
+Comprender esta jerarquía es crucial porque nos permite comparar la eficiencia de diferentes algoritmos de un vistazo. Un algoritmo con complejidad $O(n \log n)$ siempre será preferible a uno con complejidad $O(n^2)$ para entradas suficientemente grandes, sin importar las constantes o los factores de menor orden.
+
+\end{document}
